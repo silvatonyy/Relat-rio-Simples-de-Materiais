@@ -1,0 +1,27 @@
+REPORT  zts_ars_repot_of_material.
+
+TYPES: BEGIN OF t_y_final,
+    matnr TYPE makt-matnr,
+    maktx TYPE makt-maktx,
+END OF t_y_final.
+
+DATA: it_makt TYPE STANDARD TABLE OF t_y_final,
+      wa_makt TYPE t_y_final.
+
+START-OF-SELECTION.
+
+BREAK-POINT.
+
+  SELECT matnr maktx
+    FROM makt
+    INTO TABLE it_makt.
+
+    IF sy-subrc <> 0.
+      WRITE: 'Sem dados encontrados'.
+    ENDIF.
+
+    LOOP AT it_makt INTO wa_makt.
+      WRITE: / 'Material:', wa_makt-matnr,
+            /  'Descrição:', wa_makt-maktx.
+      SKIP.
+    ENDLOOP.
